@@ -46,7 +46,7 @@ func HandleObjectMessage(payload []byte) {
 	//odf0 := 0x0f & odf
 	//odf1 := (0xf0 & odf) >> 4
 	cyclecount := binary.LittleEndian.Uint32(payload[4:8])
-	log.Infof("OBJ MSG>CC: %d, dur: %d, numObjects %d, numMsgs %d\n", cyclecount, cycleDuration, numObjects, numMsgs)
+	log.Infof("OBJ MSG>CC: [%d], dur: [%d], numObjects: [%d], numMsgs: [%d]", cyclecount, cycleDuration, numObjects, numMsgs)
 }
 
 func HandleSyncMessage(payload []byte) {

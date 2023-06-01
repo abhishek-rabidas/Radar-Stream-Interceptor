@@ -130,7 +130,7 @@ func (r *Radar) HandlePacket(packet []byte) {
 				log.Info("Detection MESSAGE")
 				r.Logger.WriteObjectDetectionData(HandleDetectionMessage(payload, timeStamp))
 			} else {
-				log.Infof("Unknown type: 0x%x\n", msgType)
+				log.Infof("Unknown type: 0x%x", msgType)
 			}
 		}
 	}
