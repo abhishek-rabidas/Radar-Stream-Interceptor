@@ -106,6 +106,7 @@ func reverse(payload []byte) []byte {
 func (r *Radar) HandlePacket(packet []byte) {
 	idx := 0
 	packetSize := len(packet)
+	var timeStamp uint32
 	for {
 		msgType := binary.BigEndian.Uint16(packet[idx : idx+2])
 		idx += 2
@@ -119,17 +120,15 @@ func (r *Radar) HandlePacket(packet []byte) {
 		payload = reverse(payload)
 		switch msgType {
 		case 0x0500:
-			HandleStatusMessage(payload)
+			timeStamp = HandleStatusMessage(payload)
 		case 0x0501:
 			HandleObjectMessage(payload)
 		case 0x02ff:
 			HandleSyncMessage(payload)
-		case 0x0734:
-			HandleStatusMessage(payload)
 		default:
 			if msgType >= 0x0502 && msgType <= 0x057F {
 				log.Info("Detection MESSAGE")
-				r.Logger.WriteObjectDetectionData(HandleDetectionMessage(payload))
+				r.Logger.WriteObjectDetectionData(HandleDetectionMessage(payload, timeStamp))
 			} else {
 				log.Infof("Unknown type: 0x%x\n", msgType)
 			}

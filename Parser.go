@@ -5,8 +5,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func HandleDetectionMessage(payload []byte) *ObjectDetection {
+func HandleDetectionMessage(payload []byte, timeStamp uint32) *ObjectDetection {
 	var object ObjectDetection = ObjectDetection{}
+	object.Time = timeStamp
 	value := binary.LittleEndian.Uint64(payload[0:8])
 	xp1 := value & 0b00000000_00000000_00000000_00000000_00000000_00000000_00111111_11111110 >> 1  //1..13
 	yp1 := value & 0b00000000_00000000_00000000_00000000_00000111_11111111_11000000_00000000 >> 14 //14..26
@@ -25,7 +26,7 @@ func HandleDetectionMessage(payload []byte) *ObjectDetection {
 	//log.Infof("DET MSG>SIG: %d, %d, xp1: %.2f, yp1 %.2f, sx: %.2f, sy: %.2f,ol : %.2f \n", oid, signal, xp, yp, sx, sy, objlen)
 }
 
-func HandleStatusMessage(payload []byte) {
+func HandleStatusMessage(payload []byte) uint32 {
 	//status := payload[0]
 	//imni := payload[1]
 	//split after masking
@@ -33,7 +34,7 @@ func HandleStatusMessage(payload []byte) {
 	//ni := (0xf0 & imni) >> 4
 	//diagnose := payload[2]
 	//reserve := payload[3]
-	//ts := binary.LittleEndian.Uint32(payload[4:8])
+	return binary.LittleEndian.Uint32(payload[4:8])
 	//log.Infof("STATUS MSG>TS: %d, status: %d", ts, status)
 }
 

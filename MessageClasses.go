@@ -1,6 +1,7 @@
 package main
 
 type ObjectDetection struct {
+	Time     uint32
 	ObjectID int
 	X        float32
 	Y        float32
